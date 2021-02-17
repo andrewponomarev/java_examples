@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="20201115-1-1_create_contract_table" author="aaponomarev">
+        <createTable tableName="contract"
+                     remarks="A table to contain all productsd">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="PK_PRODUCT"/>
+            </column>
+            <column name="params"
+                    type="jsonb"
+            />
+            <column name="value" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="aaponomarev">
+        <createTable tableName="contract2"
+                     remarks="A table to contain all contracts">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="PK_CONTRACT_2"/>
+            </column>
+            <column name="value" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="contract_param">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="PK_CONTRACT_PARAM"/>
+            </column>
+            <column name="contract_id" type="varchar(255)">
+                <constraints primaryKey="true" primaryKeyName="PK_CONTRACT_TO_PARAM"
+                             foreignKeyName="FK_CONTRACT_TO_PARAM" references="contract2(id)"/>
+            </column>
+            <column name="name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="string_value" type="varchar(255)"/>
+            <column name="long_value" type="bigint"/>
+            <column name="double_value" type="real"/>
+            <column name="bool_value" type="boolean"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
