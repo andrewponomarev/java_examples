@@ -7,7 +7,10 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import ru.ponomarev.jsonb.GeneralContract;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 @Data
@@ -25,12 +28,12 @@ public class Contract extends GeneralContract {
     private String value;
 
     @Transient
-    public String getStringParam() {
+    public String getNamedStringParam() {
         return params.getStringParam();
     }
 
     @Transient
-    public void setStringParam(String s) {
+    public void setNamedStringParam(String s) {
         if (params == null) {
             params = new ContractParams();
         }

@@ -3,9 +3,9 @@ package ru.ponomarev.jsonb.contract2;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import ru.ponomarev.jsonb.contract.Contract;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -28,6 +28,12 @@ public class ContractParam {
     @NotNull
     Contract2 contract;
 
+    @OneToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    ContractParam parent;
+
+    ContractParamType type;
+
     String name;
 
     String stringValue;
@@ -37,4 +43,7 @@ public class ContractParam {
     Double doubleValue;
 
     Boolean boolValue;
+
+    LocalDate dateValue;
+
 }

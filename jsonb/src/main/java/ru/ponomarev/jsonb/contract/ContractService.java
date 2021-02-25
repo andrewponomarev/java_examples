@@ -2,8 +2,6 @@ package ru.ponomarev.jsonb.contract;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.ponomarev.jsonb.contract.Contract;
-import ru.ponomarev.jsonb.contract.ContractRepository;
 
 import javax.transaction.Transactional;
 
@@ -15,7 +13,7 @@ public class ContractService {
 
     public Contract createContractWithStringParam(String s) {
         Contract contract = new Contract();
-        contract.setStringParam(s);
+        contract.setNamedStringParam(s);
         return repository.save(contract);
     }
 
@@ -29,14 +27,14 @@ public class ContractService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        contract.setStringParam(newValue);
+        contract.setNamedStringParam(newValue);
         return repository.save(contract);
     }
 
     @Transactional
     public Contract updateStringParam(String id, String newValue) {
         Contract contract = get(id);
-        contract.setStringParam(newValue);
+        contract.setNamedStringParam(newValue);
         return repository.save(contract);
     }
 
