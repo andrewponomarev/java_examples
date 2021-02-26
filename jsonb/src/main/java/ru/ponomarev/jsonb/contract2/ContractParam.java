@@ -32,6 +32,7 @@ public class ContractParam {
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     ContractParam parent;
 
+    @Enumerated(EnumType.STRING)
     ContractParamType type;
 
     String name;

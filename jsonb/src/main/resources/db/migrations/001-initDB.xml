@@ -12,9 +12,9 @@
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_PRODUCT"/>
             </column>
-            <column name="params"
-                    type="jsonb"
-            />
+<!--            <column name="params"-->
+<!--                    type="jsonb"-->
+<!--            />-->
             <column name="value" type="varchar(255)"/>
         </createTable>
     </changeSet>
@@ -27,6 +27,7 @@
             </column>
             <column name="value" type="varchar(255)"/>
         </createTable>
+
         <createTable tableName="contract_param">
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_CONTRACT_PARAM"/>
@@ -37,13 +38,13 @@
             <column name="parent_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_CONTRACT_PARAM_PARENT" references="contract_param(id)"/>
             </column>
-            <column name="name" type="varchar(64)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="type" type="varchar(64)"/>
+            <column name="name" type="varchar(64)"/>
             <column name="string_value" type="varchar(255)"/>
             <column name="long_value" type="bigint"/>
             <column name="double_value" type="real"/>
             <column name="bool_value" type="boolean"/>
+            <column name="date_value" type="date"/>
         </createTable>
     </changeSet>
 

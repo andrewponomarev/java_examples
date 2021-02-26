@@ -1,20 +1,22 @@
-package ru.ponomarev.jsonb;
+package ru.ponomarev.jsonb.contract;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.ponomarev.jsonb.contract.Contract;
-import ru.ponomarev.jsonb.contract.ContractService;
+import ru.ponomarev.jsonb.GeneralContract;
 import ru.ponomarev.jsonb.contract2.Contract2Service;
 
 import java.util.concurrent.*;
 
 import static java.util.stream.IntStream.rangeClosed;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
-class ContractServiceTest {
+@Disabled
+public class ContractServiceTest {
 
    // String id = "c515ee2e-6b68-4371-b6dd-e2585d332113";
     String id = "e18b5b83-e0dc-4bac-a75d-32d28fff5e49";
