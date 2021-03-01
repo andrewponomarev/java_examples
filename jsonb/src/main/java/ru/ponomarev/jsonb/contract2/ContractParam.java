@@ -37,6 +37,8 @@ public class ContractParam {
 
     String name;
 
+    String className;
+
     String stringValue;
 
     Long longValue;

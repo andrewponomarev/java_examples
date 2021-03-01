@@ -7,6 +7,8 @@ public enum ContractParamType {
     DOUBLE,
     BOOLEAN,
     DATE,
-    OBJECT
+    ENUM,
+    OBJECT,
+    COLLECTION
 
 }

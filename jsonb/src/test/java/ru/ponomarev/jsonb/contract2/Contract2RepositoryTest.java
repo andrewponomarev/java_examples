@@ -7,11 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,13 +76,13 @@ public class Contract2RepositoryTest {
     }
 
     @Test
-    public void someObjectContractParamTest() {
+    public void enumContractParamTest() {
         Contract2 contract2 = repository.get(id);
-        Set<String> s = new HashSet<>();
-        contract2.setSomeObjectParam(s);
+        ContractParamType type = ContractParamType.LONG;
+        contract2.setEnumParam(type);
         repository.saveAndFlush(contract2);
         contract2 = repository.get(id);
-        assertEquals(s.toString(), contract2.getSomeObjectParam());
+        assertEquals(type, contract2.getEnumParam());
     }
 
     @Test
@@ -145,24 +141,9 @@ public class Contract2RepositoryTest {
     }
 
     @Test
-    public void collectionSomeObjectContractParamTest() {
-        Contract2 contract2 = repository.get(id);
-        List<Object> objectList = List.of(new ArrayList<String>(), new Object(), Float.valueOf(1));
-        contract2.setCollectionSomeObject(objectList);
-        repository.saveAndFlush(contract2);
-
-        contract2 = repository.get(id);
-
-        List<String> expectedList = objectList.stream().map(
-                o -> o.toString()).collect(Collectors.toList());
-        assertIterableEquals(expectedList, contract2.getCollectionSomeObjectNamedParam());
-    }
-
-    @Test
     public void customObjectContractParamTest() {
         ContractParamObjectExample example = new ContractParamObjectExample();
         example.setB(true);
-        example.setClazz(ContractParamObjectExample.class);
         example.setD(1.2);
         example.setL(12L);
         example.setLd(LocalDate.now());
@@ -171,8 +152,7 @@ public class Contract2RepositoryTest {
 
         ContractParamObjectExample simpleExample = new ContractParamObjectExample();
         simpleExample.setB(false);
-        simpleExample.setClazz(String.class);
-
+//
         example.setCol(List.of(simpleExample));
         example.setCpoe(simpleExample);
 
