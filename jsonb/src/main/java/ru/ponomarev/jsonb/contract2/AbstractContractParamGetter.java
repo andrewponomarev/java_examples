@@ -2,107 +2,59 @@ package ru.ponomarev.jsonb.contract2;
 
 import com.sun.istack.NotNull;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class AbstractContractParamGetter extends ContractParamHelper {
 
-    public AbstractContractParamGetter(Contract2 contract) {
-        super(contract);
+    public AbstractContractParamGetter(Contract2 contract, List<Param> params) {
+        super(contract, params);
     }
 
-    protected Long getLongParam(String name, ContractParam parent) {
-        return getParamValue(name, ContractParam::getLongValue, parent);
+    protected <T extends Number> T getNumberParamValue(@NotNull String name, Class<T> clazz) {
+        return SerializationUtils.deserialize(getParamValue(name, Param::getStringValue), clazz);
     }
 
-    protected Double getDoubleParam(String name, ContractParam parent) {
-        return getParamValue(name, ContractParam::getDoubleValue, parent);
+    protected <T> T getParamValue(String name, Function<Param, T> getter) {
+        Optional<Param> optParam = getRootParamByName(name);
+        return optParam.isEmpty() ? null : getter.apply(optParam.get());
     }
 
-    protected Boolean getBooleanParam(String name, ContractParam parent) {
-        return getParamValue(name, ContractParam::getBoolValue, parent);
-    }
-
-    protected LocalDate getLocalDateParam(String name, ContractParam parent) {
-        return getParamValue(name, ContractParam::getDateValue, parent);
-    }
-
-    protected String getStringParam(String name, ContractParam parent) {
-        return getParamValue(name, ContractParam::getStringValue, parent);
-    }
-
-    //todo: много косяков
-    protected <T extends Enum<T>> T getEnumParam(@NotNull String name, Class enumClass, ContractParam parent) {
-        Optional<ContractParam> optParam = getParamByNameAndParent(name, parent);
-        Enum result = null;
-        try {
-            result = optParam.isEmpty() ? null : Enum.valueOf(enumClass, optParam.get().getStringValue());
-        } catch (IllegalArgumentException e) {
+    protected <T extends Enum<T>> T getEnumParamValue(@NotNull String name, @NotNull Class<T> clazz) {
+        if (!clazz.isEnum()) {
+            return null;
         }
-        return (T) result;
+        Param param = getRootParamByName(name).orElse(null);
+        if (param == null) {
+            return null;
+        }
+        return getEnumParamValue(param, clazz);
     }
 
-    protected Object getObjectParam(String name, Class<?> clazz, ContractParam parent) {
+    protected <T> T getObjectParamValue(String name, Class<T> clazz) {
+        // todo: удалить интерфейс
         if (!ContractParamObject.class.isAssignableFrom(clazz)) {
             return null;
         }
-        ContractParam root = getParamByNameAndParent(name, parent).orElse(null);
-        return getObjectParam(root, clazz);
+        Param root = getRootParamByName(name).orElse(null);
+        return getObjectParamValue(root, clazz);
     }
 
-    protected Collection<?> getCollection(String name, Class<?> clazz, ContractParam parent) {
-        ContractParam root = getParamByNameAndParent(name, parent).orElse(null);
+    protected Collection<?> getCollection(String name) {
+        Param root = getRootParamByName(name).orElse(null);
         return getCollection(root);
     }
 
-    private Object getValue(@NotNull ContractParam param, ContractParam parent) {
-        try {
-            Class<?> clazz = Class.forName(param.getClassName());
-            return getValue(param, clazz, parent);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
-    private <T> Object getValue(ContractParam param, Class<T> clazz, ContractParam parent) {
-        switch (param.getType()) {
-            case STRING:
-                return param.getStringValue();
-            case LONG:
-                return param.getLongValue();
-            case DOUBLE:
-                return param.getDoubleValue();
-            case BOOLEAN:
-                return param.getBoolValue();
-            case DATE:
-                return param.getDateValue();
-            case ENUM:
-                return getEnumParam(param.getName(), clazz, parent);
-            case OBJECT:
-                return getObjectParam(param, clazz);
-            case COLLECTION:
-                return getCollection(param);
-            default:
-                return null;
-        }
-    }
-
-    private Collection<?> getCollection(ContractParam root) {
-        List<ContractParam> childParams = getParamsByParent(root);
-        return childParams.stream().map(p -> getValue(p, root))
-                .collect(Collectors.toList());
-    }
-
-    private Object getObjectParam(ContractParam root, Class<?> clazz) {
-        List<ContractParam> childParams = getParamsByParent(root);
+    private <T> T getObjectParamValue(Param root, Class<T> clazz) {
+        List<Param> childParams = getParamsByParent(root);
         Map<String, Object> map = new HashMap<>();
-        for (ContractParam p : childParams) {
+        for (Param p : childParams) {
             if (p.getName() == null) {
                 continue;
             }
-            Object val = getValue(p, root);
+            Object val = getValue(p);
             if (val == null) {
                 continue;
             }
@@ -111,10 +63,62 @@ public abstract class AbstractContractParamGetter extends ContractParamHelper {
         return SerializationUtils.deserialize(map, clazz);
     }
 
-    private <T> T getParamValue(String name,
-                                Function<ContractParam, T> getter,
-                                ContractParam parent) {
-        Optional<ContractParam> optParam = getParamByNameAndParent(name, parent);
-        return optParam.isEmpty() ? null : getter.apply(optParam.get());
+    private Collection<?> getCollection(Param root) {
+        List<Param> childParams = getParamsByParent(root);
+        return childParams.stream().map(p -> getValue(p))
+                .collect(Collectors.toList());
     }
+
+    private Object getValue(Param param) {
+        switch (param.getType()) {
+            case STRING:
+                return param.getStringValue();
+            case NUMBER:
+                return getNumberParamValue(param);
+            case BOOLEAN:
+                return param.getBoolValue();
+            case DATE:
+                return param.getDateValue();
+            case ENUM:
+                return getEnumParamValue(param, getEnumClass(param));
+            case OBJECT:
+                return getObjectParamValue(param, getClass(param));
+            case COLLECTION:
+                return getCollection(param);
+            default:
+                return null;
+        }
+    }
+    private Object getNumberParamValue(Param param) {
+        return SerializationUtils.deserialize(param.getStringValue(), getClass(param));
+    }
+
+    protected <T extends Enum<T>> T getEnumParamValue(Param param, Class<T> clazz) {
+        if (!clazz.isEnum()) {
+            return null;
+        }
+        T result = null;
+        try {
+            result = param == null ? null : Enum.valueOf(clazz, param.getStringValue());
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
+    private Class<?> getClass(Param param) {
+        try {
+            return Class.forName(param.getClassName());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Class<? extends Enum> getEnumClass(Param param) {
+        try {
+            return (Class<? extends Enum>) Class.forName(param.getClassName());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

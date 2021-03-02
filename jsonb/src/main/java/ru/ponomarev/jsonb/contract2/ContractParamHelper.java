@@ -15,51 +15,60 @@ public class ContractParamHelper {
 
     private final Contract2 contract;
 
-    protected Optional<ContractParam> getParamByNameAndParent(
+    private final List<Param> params;
+
+    protected Optional<Param> getParamByNameAndParent(
             @Nullable String name,
-            @Nullable ContractParam parent) {
+            @Nullable Param parent) {
         if (name == null) {
             return Optional.empty();
         }
-        return contract.getParams().stream()
+        return params.stream()
                 .filter(x -> name.equals(x.getName()))
                 .filter(x -> parent == null || parent.equals(x.getParent()))
                 .findFirst();
     }
 
-    protected @NotNull List<ContractParam> getParamsByParentName(String name, ContractParam p) {
-        Optional<ContractParam> parent = getParamByNameAndParent(name, p);
+    protected Optional<Param> getRootParamByName(@NotNull String name) {
+        return params.stream()
+                .filter(x -> name.equals(x.getName()))
+                .filter(x -> x.getParent() == null)
+                .findFirst();
+    }
+
+    protected @NotNull List<Param> getParamsByParentName(String name, Param p) {
+        Optional<Param> parent = getParamByNameAndParent(name, p);
         if (parent.isEmpty()) {
             return Collections.emptyList();
         }
-        return contract.getParams().stream()
+        return params.stream()
                 .filter(param -> parent.get().equals(param.getParent()))
                 .collect(Collectors.toList());
     }
 
-    protected @NotNull List<ContractParam> getParamsByParent(ContractParam parent) {
+    protected @NotNull List<Param> getParamsByParent(Param parent) {
         if (parent == null) {
             return Collections.emptyList();
         }
-        return contract.getParams().stream()
+        return params.stream()
                 .filter(param -> parent.equals(param.getParent()))
                 .collect(Collectors.toList());
     }
 
-    protected void setParamToContract(ContractParam param, Contract2 contract) {
+    protected void setParamToContract(Param param, Contract2 contract) {
         param.setContract(contract);
         contract.getParams().add(param);
     }
 
-    protected <T> Supplier<? extends ContractParam> createContractParamSupplier(
+    protected <T> Supplier<? extends Param> createContractParamSupplier(
             @Nullable String name,
             @NotNull T value,
             ContractParamType type,
-            ContractParam parent,
+            Param parent,
             Class<T> clazz
     ) {
         return () -> {
-            ContractParam p = new ContractParam(name);
+            Param p = new Param(name);
             p.setType(type);
             p.setClassName(clazz == null ? value.getClass().getName() : clazz.getName());
             p.setParent(parent);

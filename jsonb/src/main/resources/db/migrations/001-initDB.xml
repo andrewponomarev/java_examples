@@ -28,7 +28,7 @@
             <column name="value" type="varchar(255)"/>
         </createTable>
 
-        <createTable tableName="contract_param">
+        <createTable tableName="param">
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true" primaryKeyName="PK_CONTRACT_PARAM"/>
             </column>
@@ -36,14 +36,12 @@
                 <constraints foreignKeyName="FK_CONTRACT_TO_PARAM" references="contract2(id)"/>
             </column>
             <column name="parent_id" type="varchar(255)">
-                <constraints foreignKeyName="FK_CONTRACT_PARAM_PARENT" references="contract_param(id)"/>
+                <constraints foreignKeyName="FK_CONTRACT_PARAM_PARENT" references="param(id)"/>
             </column>
             <column name="class_name" type="varchar(256)"/>
             <column name="type" type="varchar(64)"/>
             <column name="name" type="varchar(64)"/>
             <column name="string_value" type="varchar(255)"/>
-            <column name="long_value" type="bigint"/>
-            <column name="double_value" type="real"/>
             <column name="bool_value" type="boolean"/>
             <column name="date_value" type="date"/>
         </createTable>

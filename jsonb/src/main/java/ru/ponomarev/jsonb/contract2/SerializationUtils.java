@@ -51,5 +51,26 @@ public class SerializationUtils {
         return instance;
     }
 
+    /**
+     *
+     * class A {
+     *     String s;
+     * }
+     *
+     * s; A.class -> new A(s)
+     *
+     * @param s - string value of object
+     * @param clazz - target type of deserialization
+     */
+    static <T> T deserialize(String s, Class<T> clazz) {
+        T instance = null;
+        try {
+            Constructor<T> ctor = clazz.getDeclaredConstructor(String.class);
+            instance = ctor.newInstance(s);
+        } catch (Exception e) {
+        }
+        return instance;
+    }
+
 
 }

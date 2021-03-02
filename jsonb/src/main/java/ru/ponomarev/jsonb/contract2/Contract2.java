@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.lang.Nullable;
 import ru.ponomarev.jsonb.GeneralContract;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class Contract2 extends GeneralContract {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract", cascade=CascadeType.ALL)
     @JsonIgnore
-    private List<ContractParam> params = new ArrayList<>();
+    private List<Param> params = new ArrayList<>();
 
     private String value;
 
@@ -36,6 +36,7 @@ public class Contract2 extends GeneralContract {
     public static final String DATE_NAMED_PARAM = "localDateParam";
     public static final String STRING_NAMED_PARAM = "namedStringParam";
     public static final String ENUM_PARAM = "enumField";
+    private static final String BIG_DECIMAL = "bigDecimal";
 
     public static String CONTRACT_PARAM_OBJECT_EXAMPLE = "ContractParamObjectExample";
 
@@ -63,7 +64,7 @@ public class Contract2 extends GeneralContract {
     }
 
     public Long getLongNamedParam() {
-        return contractParamGetter.getLongParam(LONG_NAMED_PARAM);
+        return contractParamGetter.getLongParamValue(LONG_NAMED_PARAM);
     }
 
     public void setLongNamedParam(Long value) {
@@ -71,7 +72,7 @@ public class Contract2 extends GeneralContract {
     }
 
     public Double getDoubleNamedParam() {
-        return contractParamGetter.getDoubleParam(DOUBLE_NAMED_PARAM);
+        return contractParamGetter.getDoubleParamValue(DOUBLE_NAMED_PARAM);
     }
 
     public void setDoubleNamedParam(Double value) {
@@ -88,7 +89,7 @@ public class Contract2 extends GeneralContract {
 
 
     public Boolean getBooleanNamedParam() {
-        return contractParamGetter.getBooleanParam(BOOLEAN_NAMED_PARAM);
+        return contractParamGetter.getBooleanParamValue(BOOLEAN_NAMED_PARAM);
     }
 
     public void setBooleanNamedParam(Boolean value) {
@@ -96,7 +97,7 @@ public class Contract2 extends GeneralContract {
     }
 
     public ContractParamObjectExample getContractParamObjectExample() {
-        return (ContractParamObjectExample) contractParamGetter.getObjectParam(CONTRACT_PARAM_OBJECT_EXAMPLE, ContractParamObjectExample.class);
+        return contractParamGetter.getContractParamObjectExampleParam(CONTRACT_PARAM_OBJECT_EXAMPLE);
     }
 
     public void setContractParamObjectExample(ContractParamObjectExample value) {
@@ -104,7 +105,7 @@ public class Contract2 extends GeneralContract {
     }
 
     public ContractParamType getEnumParam() {
-        return contractParamGetter.getEnumParam(ENUM_PARAM, ContractParamType.class);
+        return contractParamGetter.getEnumParamValue(ENUM_PARAM, ContractParamType.class);
     }
 
     public void setEnumParam(ContractParamType value) {
@@ -159,80 +160,88 @@ public class Contract2 extends GeneralContract {
         contractParamSetter.setParam(COLLECTION_ENUM, value);
     }
 
+    public BigDecimal getBigDecimalParam() {
+        return contractParamGetter.getBigDecimalParamValue(BIG_DECIMAL);
+    }
+
+    public void setBigDecimalParam(BigDecimal value) {
+        contractParamSetter.setParam(BIG_DECIMAL, value);
+    }
+
     private class ContractParamGetter extends AbstractContractParamGetter {
 
         ContractParamGetter() {
-            super(Contract2.this);
+            super(Contract2.this, Contract2.this.getParams());
         }
 
-        public Long getLongParam(String name) {
-            return getLongParam(name, null);
+        public Long getLongParamValue(String name) {
+            return this.getNumberParamValue(name, Long.class);
         }
 
-        public Double getDoubleParam(String name) {
-            return getDoubleParam(name, null);
+        public BigDecimal getBigDecimalParamValue(String name) {
+            return this.getNumberParamValue(name, BigDecimal.class);
         }
 
-        public Boolean getBooleanParam(String name) {
-            return getBooleanParam(name,null);
+        public Double getDoubleParamValue(String name) {
+            return this.getNumberParamValue(name, Double.class);
+        }
+
+        public Boolean getBooleanParamValue(String name) {
+            return getParamValue(name, Param::getBoolValue);
         }
 
         public LocalDate getLocalDateParam(String name) {
-            return getLocalDateParam(name, null);
+            return getParamValue(name, Param::getDateValue);
         }
 
         public String getStringParam(String name) {
-            return getStringParam(name, null);
+            return getParamValue(name, Param::getStringValue);
         }
 
-        public <T extends Enum<T>> T getEnumParam(@NotNull String name, Class enumClass) {
-            return getEnumParam(name, enumClass, null);
+        public ContractParamType getEnumParam(@NotNull String name) {
+            return getEnumParamValue(name, ContractParamType.class);
         }
 
-        public Object getObjectParam(String name, Class<?> clazz) {
-            return getObjectParam(name, clazz, null);
+        public ContractParamObjectExample getContractParamObjectExampleParam(String name) {
+            return getObjectParamValue(name, ContractParamObjectExample.class);
         }
 
         public Collection<?> getCollection(String name, Class<?> clazz) {
-            return getCollection(name, clazz, null);
+            return getCollection(name);
         }
     }
 
     private class ContractParamSetter extends AbstractContractParamSetter {
 
         ContractParamSetter() {
-            super(Contract2.this);
+            super(Contract2.this, Contract2.this.params);
         }
 
-        public ContractParam setParam(@Nullable String name, Long value) {
+        public Param setParam(String name, Number value) {
             return setParam(name, value, null);
         }
 
-        public ContractParam setParam(@Nullable String name, Double value) {
+        public Param setParam(String name, Boolean value) {
             return setParam(name, value, null);
         }
 
-        public ContractParam setParam(@Nullable String name, Boolean value) {
+        public Param setParam(String name, LocalDate value) {
             return setParam(name, value, null);
         }
 
-        public ContractParam setParam(@Nullable String name, LocalDate value) {
+        public Param setParam(String name, String value) {
             return setParam(name, value, null);
         }
 
-        public ContractParam setParam(@Nullable String name, String value) {
+        public <T extends Enum<T>> Param setParam(String name, T value) {
             return setParam(name, value, null);
         }
 
-        public <T extends Enum<T>> ContractParam setParam(String name, T value) {
+        public <T extends ContractParamObject> Param setParam(String name, T value) {
             return setParam(name, value, null);
         }
 
-        public <T extends ContractParamObject> ContractParam setParam(String name, T value) {
-            return setParam(name, value, null);
-        }
-
-        public ContractParam setParam(String name, Collection<?> values) {
+        public Param setParam(String name, Collection<?> values) {
             return setParam(name, values, null);
         }
     }

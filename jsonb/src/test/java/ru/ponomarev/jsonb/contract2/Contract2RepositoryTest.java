@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -162,6 +163,17 @@ public class Contract2RepositoryTest {
 
         contract2 = repository.get(id);
         assertEquals(example, contract2.getContractParamObjectExample());
+    }
+
+
+    @Test
+    public void bigDecimalContract() {
+        Contract2 contract2 = repository.get(id);
+        BigDecimal expected = BigDecimal.valueOf(1.213312);
+        contract2.setBigDecimalParam(expected);
+        repository.saveAndFlush(contract2);
+        contract2 = repository.get(id);
+        assertEquals(expected, contract2.getBigDecimalParam());
     }
 
 

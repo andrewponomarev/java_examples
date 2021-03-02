@@ -9,12 +9,12 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-public class ContractParam {
+public class Param {
 
-    public ContractParam() {
+    public Param() {
     }
 
-    public ContractParam(String name) {
+    public Param(String name) {
         this.name = name;
     }
 
@@ -30,7 +30,7 @@ public class ContractParam {
 
     @OneToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    ContractParam parent;
+    Param parent;
 
     @Enumerated(EnumType.STRING)
     ContractParamType type;
@@ -40,10 +40,6 @@ public class ContractParam {
     String className;
 
     String stringValue;
-
-    Long longValue;
-
-    Double doubleValue;
 
     Boolean boolValue;
 
