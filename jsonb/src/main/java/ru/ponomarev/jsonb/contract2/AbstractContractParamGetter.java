@@ -13,7 +13,8 @@ public abstract class AbstractContractParamGetter extends ContractParamHelper {
     }
 
     protected <T extends Number> T getNumberParamValue(@NotNull String name, Class<T> clazz) {
-        return SerializationUtils.deserialize(getParamValue(name, Param::getStringValue), clazz);
+        return SerializationUtils.deserialize(
+                getParamValue(name, Param::getNumberValue).toString(), clazz);
     }
 
     protected <T> T getParamValue(String name, Function<Param, T> getter) {
@@ -90,7 +91,7 @@ public abstract class AbstractContractParamGetter extends ContractParamHelper {
         }
     }
     private Object getNumberParamValue(Param param) {
-        return SerializationUtils.deserialize(param.getStringValue(), getClass(param));
+        return SerializationUtils.deserialize(param.getNumberValue().toString(), getClass(param));
     }
 
     protected <T extends Enum<T>> T getEnumParamValue(Param param, Class<T> clazz) {

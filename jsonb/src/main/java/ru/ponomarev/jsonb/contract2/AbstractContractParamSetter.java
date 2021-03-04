@@ -3,6 +3,7 @@ package ru.ponomarev.jsonb.contract2;
 import com.sun.istack.NotNull;
 import org.springframework.lang.Nullable;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +19,8 @@ public abstract class AbstractContractParamSetter extends ContractParamHelper {
     }
 
     protected Param setParam(@Nullable String name, Number value, Param parent) {
-        return setParam(name, value.toString(), Param::setStringValue, NUMBER, parent, (Class) value.getClass());
+        BigDecimal bigDecimalValue = new BigDecimal(value.toString());
+        return setParam(name, bigDecimalValue, Param::setNumberValue, NUMBER, parent, (Class) value.getClass());
     }
 
     protected Param setParam(@Nullable String name, Boolean value, Param parent) {
@@ -39,7 +41,7 @@ public abstract class AbstractContractParamSetter extends ContractParamHelper {
 
 
     protected <T extends ContractParamObject> Param setParam(String name, T value, Param parent) {
-        Param root = setParam(name, value, OBJECT, parent, null);
+        Param root = setParam(name, value, OBJECT, parent, (Class<T>) value.getClass());
         Map<String, ?> fieldMap = SerializationUtils.serialize(value);
         for (Map.Entry<String, ?> e : fieldMap.entrySet()) {
             if (e.getValue() == null) {

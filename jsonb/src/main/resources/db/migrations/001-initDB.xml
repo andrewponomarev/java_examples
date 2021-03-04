@@ -42,6 +42,7 @@
             <column name="type" type="varchar(64)"/>
             <column name="name" type="varchar(64)"/>
             <column name="string_value" type="varchar(255)"/>
+            <column name="number_value" type="decimal"/>
             <column name="bool_value" type="boolean"/>
             <column name="date_value" type="date"/>
         </createTable>

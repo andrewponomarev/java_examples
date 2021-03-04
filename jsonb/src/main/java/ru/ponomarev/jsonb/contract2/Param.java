@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -40,6 +41,8 @@ public class Param {
     String className;
 
     String stringValue;
+
+    BigDecimal numberValue;
 
     Boolean boolValue;
 
