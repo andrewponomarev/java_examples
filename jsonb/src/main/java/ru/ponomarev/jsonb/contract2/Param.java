@@ -27,7 +27,7 @@ public class Param {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", nullable = false)
     @NotNull
-    Contract2 contract;
+    Contract contract;
 
     @OneToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
@@ -47,5 +47,7 @@ public class Param {
     Boolean boolValue;
 
     LocalDate dateValue;
+
+    Boolean isNull;
 
 }

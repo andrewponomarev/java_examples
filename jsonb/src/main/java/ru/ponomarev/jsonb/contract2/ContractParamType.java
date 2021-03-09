@@ -10,6 +10,10 @@ public enum ContractParamType {
     DATE,
     ENUM,
     OBJECT,
-    COLLECTION
+    COLLECTION;
+
+    public static boolean isComplex(ContractParamType type) {
+        return OBJECT.equals(type) || COLLECTION.equals(type);
+    }
 
 }

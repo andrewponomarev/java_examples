@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-@Entity
 @Data
 @TypeDefs({@TypeDef(name = "jsonb", typeClass = ContractParams.class)})
 public class Contract extends GeneralContract {

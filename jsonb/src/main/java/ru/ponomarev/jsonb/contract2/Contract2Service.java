@@ -11,15 +11,15 @@ public class Contract2Service {
 
     private final Contract2Repository repository;
 
-    public Contract2 createContractWithStringParam(String s) {
-        Contract2 contract = new Contract2();
+    public Contract createContractWithStringParam(String s) {
+        Contract contract = new Contract();
         contract.setNamedStringParam(s);
         return repository.save(contract);
     }
 
     @Transactional
-    public Contract2 longUpdateStringParam(String id, String newValue) {
-        Contract2 contract = get(id);
+    public Contract longUpdateStringParam(String id, String newValue) {
+        Contract contract = get(id);
         try {
             System.out.println("sleep ");
             Thread.sleep(10000);
@@ -32,8 +32,8 @@ public class Contract2Service {
     }
 
     @Transactional
-    public Contract2 updateStringParam(String id, String newValue) {
-        Contract2 contract = get(id);
+    public Contract updateStringParam(String id, String newValue) {
+        Contract contract = get(id);
         System.out.println("get for param ");
         contract.setNamedStringParam(newValue);
         System.out.println("setStringParam ");
@@ -41,15 +41,15 @@ public class Contract2Service {
     }
 
     @Transactional
-    public Contract2 updateContractValue(String id, String newValue) {
-        Contract2 contract = get(id);
+    public Contract updateContractValue(String id, String newValue) {
+        Contract contract = get(id);
         contract.setValue(newValue);
         return repository.save(contract);
     }
 
     @Transactional
-    public Contract2 longUpdateContractValue(String id, String newValue) {
-        Contract2 contract = get(id);
+    public Contract longUpdateContractValue(String id, String newValue) {
+        Contract contract = get(id);
         System.out.println("get for value ");
         try {
             System.out.println("sleep ");
@@ -63,7 +63,7 @@ public class Contract2Service {
         return repository.save(contract);
     }
 
-    public Contract2 get(String id) {
+    public Contract get(String id) {
         return repository.get(id);
     }
 }

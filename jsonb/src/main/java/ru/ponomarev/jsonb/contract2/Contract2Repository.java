@@ -10,16 +10,16 @@ public class Contract2Repository {
 
     private final CrudContract2Repository crudContractRepository;
 
-    Contract2 save(Contract2 contract) {
+    Contract save(Contract contract) {
         return crudContractRepository.save(contract);
     }
 
-    Contract2 get(String id) {
+    Contract get(String id) {
         //return crudContractRepository.findById(id).get();
         return crudContractRepository.findOneForUpdate(id);
     }
 
-    Contract2 saveAndFlush(Contract2 contract) {
+    Contract saveAndFlush(Contract contract) {
         return crudContractRepository.saveAndFlush(contract);
     }
 

@@ -11,9 +11,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class ContractParamHelper {
+public abstract class ParamHelper<T> {
 
-    private final Contract2 contract;
+    private final T parentObject;
 
     private final List<Param> params;
 
@@ -36,8 +36,8 @@ public class ContractParamHelper {
                 .findFirst();
     }
 
-    protected @NotNull List<Param> getParamsByParentName(String name, Param p) {
-        Optional<Param> parent = getParamByNameAndParent(name, p);
+    protected @NotNull List<Param> getParamsByParentName(String name) {
+        Optional<Param> parent = getRootParamByName(name);
         if (parent.isEmpty()) {
             return Collections.emptyList();
         }
@@ -55,24 +55,27 @@ public class ContractParamHelper {
                 .collect(Collectors.toList());
     }
 
-    protected void setParamToContract(Param param, Contract2 contract) {
-        param.setContract(contract);
-        contract.getParams().add(param);
-    }
+    abstract void setParamToParentObject(Param param, T parentObject);
 
     protected <T> Supplier<? extends Param> createContractParamSupplier(
-            @Nullable String name,
-            @NotNull T value,
+            String name,
             ContractParamType type,
+            T value,
             Param parent,
-            Class<T> clazz
+            @NotNull Class<T> clazz
     ) {
         return () -> {
+            if (value == null) {
+                return null;
+            }
             Param p = new Param(name);
             p.setType(type);
-            p.setClassName(clazz == null ? value.getClass().getName() : clazz.getName());
+            if (clazz != null) {
+                p.setClassName(clazz.getName());
+            }
             p.setParent(parent);
-            setParamToContract(p, contract);
+            params.add(p);
+            setParamToParentObject(p, parentObject);
             return p;
         };
     }
