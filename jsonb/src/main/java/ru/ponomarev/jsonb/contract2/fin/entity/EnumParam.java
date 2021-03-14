@@ -1,7 +1,6 @@
 package ru.ponomarev.jsonb.contract2.fin.entity;
 
 import lombok.NoArgsConstructor;
-import ru.ponomarev.jsonb.contract2.fin.ParamUtils;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class EnumParam<T extends Enum<T>> extends SimpleParam<T> {
     public T get() {
         T result = null;
         try {
-            result = Enum.valueOf((Class<T>) ParamUtils.getClass(this), stringValue);
+            result = Enum.valueOf((Class<T>) this.cls, stringValue);
         } catch (Exception e) {
         }
         return result;

@@ -2,7 +2,6 @@ package ru.ponomarev.jsonb.contract2.fin.entity;
 
 import lombok.NoArgsConstructor;
 import ru.ponomarev.jsonb.contract2.SerializationUtils;
-import ru.ponomarev.jsonb.contract2.fin.ParamUtils;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -23,7 +22,7 @@ public class NumberParam<T extends Number> extends SimpleParam<T> {
     public T get() {
         T result = null;
         try {
-            result = (T) SerializationUtils.deserialize(numericValue.toString(), ParamUtils.getClass(this));
+            result = (T) SerializationUtils.deserialize(numericValue.toString(), this.cls);
         } catch (Exception e) {}
         return result;
     }

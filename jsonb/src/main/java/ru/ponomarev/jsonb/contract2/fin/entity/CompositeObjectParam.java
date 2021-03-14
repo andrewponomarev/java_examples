@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 import ru.ponomarev.jsonb.contract2.SerializationUtils;
 import ru.ponomarev.jsonb.contract2.fin.ParamFactory;
-import ru.ponomarev.jsonb.contract2.fin.ParamUtils;
 
 import javax.persistence.*;
 import java.util.*;
@@ -47,7 +46,7 @@ public class CompositeObjectParam extends CompositeParam<Object> {
             }
             map.put(p.getName(), val);
         }
-        return SerializationUtils.deserialize(map, ParamUtils.getClass(this));
+        return SerializationUtils.deserialize(map, this.cls);
     }
 
 

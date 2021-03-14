@@ -31,7 +31,8 @@ public class ParamFactory {
             p = new CompositeObjectParam(name);
         }
         p.set(obj);
-        p.setClassName(obj.getClass().getName());
+//        p.setClassName(obj.getClass().getName());
+        p.setCls(obj.getClass());
         return p;
     }
 }
