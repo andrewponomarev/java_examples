@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
 @Data
 public class Param {
 
@@ -50,4 +49,14 @@ public class Param {
 
     Boolean isNull;
 
+    public void setNumberValue(Number number) {
+        numberValue = toBigDecimal(number);
+    }
+
+    private BigDecimal toBigDecimal(Number num) {
+        if (num == null) {
+            return null;
+        }
+        return new BigDecimal(num.toString());
+    }
 }

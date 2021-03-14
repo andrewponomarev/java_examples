@@ -2,7 +2,6 @@ package ru.ponomarev.jsonb.contract2;
 
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,9 +16,7 @@ public abstract class ParamHelper<T> {
 
     private final List<Param> params;
 
-    protected Optional<Param> getParamByNameAndParent(
-            @Nullable String name,
-            @Nullable Param parent) {
+    protected Optional<Param> getParamByNameAndParent(String name, Param parent) {
         if (name == null) {
             return Optional.empty();
         }
@@ -55,28 +52,27 @@ public abstract class ParamHelper<T> {
                 .collect(Collectors.toList());
     }
 
-    abstract void setParamToParentObject(Param param, T parentObject);
-
-    protected <T> Supplier<? extends Param> createContractParamSupplier(
+    protected <T> Supplier<? extends Param> paramSupplier(
             String name,
-            ContractParamType type,
             T value,
-            Param parent,
-            @NotNull Class<T> clazz
+            Param parent
     ) {
         return () -> {
             if (value == null) {
                 return null;
             }
             Param p = new Param(name);
-            p.setType(type);
-            if (clazz != null) {
-                p.setClassName(clazz.getName());
-            }
+            p.setClassName(getClassName(value));
             p.setParent(parent);
             params.add(p);
             setParamToParentObject(p, parentObject);
             return p;
         };
     }
+
+    private String getClassName(@NotNull Object obj) {
+        return obj.getClass().getName();
+    }
+
+    abstract void setParamToParentObject(@NotNull Param param, @NotNull T parentObject);
 }

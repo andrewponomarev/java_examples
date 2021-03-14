@@ -25,7 +25,7 @@
             <column name="parent_id" type="varchar(255)">
                 <constraints foreignKeyName="FK_CONTRACT_PARAM_PARENT" references="param(id)"/>
             </column>
-            <column name="class_name" type="varchar(256)"/>
+            <column name="cls" type="varchar(256)"/>
             <column name="type" type="varchar(64)"/>
             <column name="name" type="varchar(64)"/>
             <column name="string_value" type="varchar(255)"/>

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import ru.ponomarev.jsonb.GeneralContract;
+import ru.ponomarev.jsonb.contract2.fin.ParamSuperObject;
+import ru.ponomarev.jsonb.contract2.fin.entity.Param;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -22,10 +24,9 @@ public class Contract extends GeneralContract {
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String id;
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract", cascade=CascadeType.ALL)
     @JsonIgnore
-    private List<Param> params = new ArrayList<>();
+    private List<Param<?>> params = new ArrayList<>();
 
     private String value;
 
@@ -51,130 +52,126 @@ public class Contract extends GeneralContract {
 
 
     public String getNamedStringParam() {
-        return contractParamComponent.getStringParam(STRING_NAMED_PARAM);
+        return contractParamComponent.get(STRING_NAMED_PARAM, String.class);
     }
 
     public void setNamedStringParam(String value) {
-        contractParamComponent.setParam(STRING_NAMED_PARAM, value);
+        contractParamComponent.set(STRING_NAMED_PARAM, value);
     }
 
     public Long getLongNamedParam() {
-        return contractParamComponent.getLongParamValue(LONG_NAMED_PARAM);
+        return contractParamComponent.get(LONG_NAMED_PARAM, Long.class);
     }
 
     public void setLongNamedParam(Long value) {
-        contractParamComponent.setParam(LONG_NAMED_PARAM, value);
+        contractParamComponent.set(LONG_NAMED_PARAM, value);
     }
 
     public Double getDoubleNamedParam() {
-        return contractParamComponent.getDoubleParamValue(DOUBLE_NAMED_PARAM);
+        return contractParamComponent.get(DOUBLE_NAMED_PARAM, Double.class);
     }
 
     public void setDoubleNamedParam(Double value) {
-        contractParamComponent.setParam(DOUBLE_NAMED_PARAM, value);
+        contractParamComponent.set(DOUBLE_NAMED_PARAM, value);
     }
 
     public LocalDate getLocalDateNamedParam() {
-        return contractParamComponent.getLocalDateParam(DATE_NAMED_PARAM);
+        return contractParamComponent.get(DATE_NAMED_PARAM, LocalDate.class);
     }
 
     public void setLocalDateNamedParam(LocalDate value) {
-        contractParamComponent.setParam(DATE_NAMED_PARAM, value);
+        contractParamComponent.set(DATE_NAMED_PARAM, value);
     }
 
 
     public Boolean getBooleanNamedParam() {
-        return contractParamComponent.getBooleanParamValue(BOOLEAN_NAMED_PARAM);
+        return contractParamComponent.get(BOOLEAN_NAMED_PARAM, Boolean.class);
     }
 
     public void setBooleanNamedParam(Boolean value) {
-        contractParamComponent.setParam(BOOLEAN_NAMED_PARAM, value);
+        contractParamComponent.set(BOOLEAN_NAMED_PARAM, value);
     }
 
     public ContractParamObjectExample getContractParamObjectExample() {
-        return contractParamComponent.getContractParamObjectExampleParam(CONTRACT_PARAM_OBJECT_EXAMPLE);
+        return contractParamComponent.get(CONTRACT_PARAM_OBJECT_EXAMPLE, ContractParamObjectExample.class);
     }
 
     public void setContractParamObjectExample(ContractParamObjectExample value) {
-        contractParamComponent.setParam(CONTRACT_PARAM_OBJECT_EXAMPLE, value);
+        contractParamComponent.set(CONTRACT_PARAM_OBJECT_EXAMPLE, value);
     }
 
     public ContractParamType getEnumParam() {
-        return contractParamComponent.getEnumParamValue(ENUM_PARAM, ContractParamType.class);
+        return contractParamComponent.get(ENUM_PARAM, ContractParamType.class);
     }
 
     public void setEnumParam(ContractParamType value) {
-        contractParamComponent.setParam(ENUM_PARAM, value);
+        contractParamComponent.set(ENUM_PARAM, value);
     }
 
     public Collection<?> getCollectionLongNamedParam() {
-        return contractParamComponent.getCollection(COLLECTION_LONG, Long.class);
+        return contractParamComponent.get(COLLECTION_LONG, Collection.class);
     }
 
     public void setCollectionLongNamedParam(Collection<? extends Long> value) {
-        contractParamComponent.setParam(COLLECTION_LONG, value);
+        contractParamComponent.set(COLLECTION_LONG, value);
     }
 
     public Collection<?> getCollectionDoubleNamedParam() {
-        return contractParamComponent.getCollection(COLLECTION_DOUBLE, Double.class);
+        return contractParamComponent.get(COLLECTION_DOUBLE, Collection.class);
     }
 
     public void setCollectionDoubleNamedParam(Collection<? extends Double> value) {
-        contractParamComponent.setParam(COLLECTION_DOUBLE, value);
+        contractParamComponent.set(COLLECTION_DOUBLE, value);
     }
 
     public Collection<?> getCollectionBooleanNamedParam() {
-        return contractParamComponent.getCollection(COLLECTION_BOOLEAN, Boolean.class);
+        return contractParamComponent.get(COLLECTION_BOOLEAN, Collection.class);
     }
 
     public void setCollectionBooleanNamedParam(Collection<? extends Boolean> value) {
-        contractParamComponent.setParam(COLLECTION_BOOLEAN, value);
+        contractParamComponent.set(COLLECTION_BOOLEAN, value);
     }
 
     public Collection<?> getCollectionDateNamedParam() {
-        return contractParamComponent.getCollection(COLLECTION_DATE, LocalDate.class);
+        return contractParamComponent.get(COLLECTION_DATE, Collection.class);
     }
 
     public void setCollectionDateNamedParam(Collection<? extends LocalDate> value) {
-        contractParamComponent.setParam(COLLECTION_DATE, value);
+        contractParamComponent.set(COLLECTION_DATE, value);
     }
 
     public Collection<?> getCollectionStringNamedParam() {
-        return contractParamComponent.getCollection(COLLECTION_STRING, String.class);
+        return contractParamComponent.get(COLLECTION_STRING, Collection.class);
     }
 
     public void setCollectionStringNamedParam(Collection<? extends String> value) {
-        contractParamComponent.setParam(COLLECTION_STRING, value);
+        contractParamComponent.set(COLLECTION_STRING, value);
     }
 
     public Collection<?> getCollectionSomeObjectNamedParam() {
-        return contractParamComponent.getCollection(COLLECTION_ENUM, String.class);
+        return contractParamComponent.get(COLLECTION_ENUM, Collection.class);
     }
 
     public void setCollectionSomeObject(Collection<? extends Object> value) {
-        contractParamComponent.setParam(COLLECTION_ENUM, value);
+        contractParamComponent.set(COLLECTION_ENUM, value);
     }
 
     public BigDecimal getBigDecimalParam() {
-        return contractParamComponent.getBigDecimalParamValue(BIG_DECIMAL);
+        return contractParamComponent.get(BIG_DECIMAL, BigDecimal.class);
     }
 
     public void setBigDecimalParam(BigDecimal value) {
-        contractParamComponent.setParam(BIG_DECIMAL, value);
+        contractParamComponent.set(BIG_DECIMAL, value);
     }
 
 
-    private class ContractParamComponent extends AbstractParamComponent<Contract> {
 
-        ContractParamComponent() {
-            super(Contract.this, Contract.this.params);
-        }
 
-        @Override
-        void setParamToParentObject(Param param, Contract parentObject) {
-            param.setContract(parentObject);
+    private class ContractParamComponent extends ParamSuperObject {
+
+        public ContractParamComponent() {
+            super(Contract.this, params);
         }
     }
-
 
 }

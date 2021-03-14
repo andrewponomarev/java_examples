@@ -20,7 +20,7 @@ public class SerializationUtils {
      *
      * @return
      */
-    static Map<String, ?> serialize(Object obj) {
+    public static Map<String, ?> serialize(Object obj) {
         Map<String, Object> result = new HashMap<>();
         try {
             for (Field field : obj.getClass().getDeclaredFields()) {
@@ -37,7 +37,7 @@ public class SerializationUtils {
      * @param obj - map representation of object
      * @param clazz - target type of deserialization
      */
-    static <T> T deserialize(Map<String, ?> obj, Class<T> clazz) {
+    public static <T> T deserialize(Map<String, ?> obj, Class<T> clazz) {
         T instance = null;
         try {
             Constructor<T> ctor = clazz.getDeclaredConstructor();
@@ -62,7 +62,7 @@ public class SerializationUtils {
      * @param s - string value of object
      * @param clazz - target type of deserialization
      */
-    static <T> T deserialize(String s, Class<T> clazz) {
+    public static <T> T deserialize(String s, Class<T> clazz) {
         T instance = null;
         try {
             Constructor<T> ctor = clazz.getDeclaredConstructor(String.class);
