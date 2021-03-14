@@ -1,6 +1,7 @@
 package ru.ponomarev.jsonb.contract2.fin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import liquibase.util.BooleanUtils;
 import lombok.NoArgsConstructor;
 import ru.ponomarev.jsonb.contract2.SerializationUtils;
 import ru.ponomarev.jsonb.contract2.fin.ParamFactory;
@@ -35,6 +36,9 @@ public class CompositeObjectParam extends CompositeParam<Object> {
 
     @Override
     public Object get() {
+        if(BooleanUtils.isTrue(this.isNull)) {
+            return null;
+        }
         Map<String, Object> map = new HashMap<>();
         for (Param<?> p : children) {
             if (p.getName() == null) {

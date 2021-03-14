@@ -33,7 +33,7 @@ public class NumberParam<T extends Number> extends SimpleParam<T> {
 //    }
 
     @Override
-    public void set(Object value) {
+    public void setValue(T value) {
         if (value instanceof BigDecimal) {
             numericValue = (BigDecimal) value;
         } else if (value instanceof Number) {

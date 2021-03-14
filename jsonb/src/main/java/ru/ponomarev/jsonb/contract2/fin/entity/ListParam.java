@@ -1,6 +1,7 @@
 package ru.ponomarev.jsonb.contract2.fin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import liquibase.util.BooleanUtils;
 import lombok.NoArgsConstructor;
 import ru.ponomarev.jsonb.contract2.fin.ParamFactory;
 
@@ -37,7 +38,7 @@ public class ListParam extends CompositeParam<List<?>> {
 
     @Override
     public List<?> get() {
-        if (isNull) {
+        if(BooleanUtils.isTrue(this.isNull)) {
             return null;
         }
         return children.stream().map(Param::get).collect(Collectors.toList());
@@ -52,9 +53,6 @@ public class ListParam extends CompositeParam<List<?>> {
         }
         if (!(value instanceof Collection<?>)) {
             return;
-        }
-        if (children == null) {
-            children = new ArrayList<>();
         }
         List l = (List)value;
         for (int i = 0; i < l.size(); i++) {

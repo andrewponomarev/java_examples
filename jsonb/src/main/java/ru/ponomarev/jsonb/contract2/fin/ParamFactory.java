@@ -30,9 +30,10 @@ public class ParamFactory {
         } else {
             p = new CompositeObjectParam(name);
         }
+        // todo: если поменять местами - все сломается
+        p.setCls((Class)obj.getClass());
         p.set(obj);
 //        p.setClassName(obj.getClass().getName());
-        p.setCls(obj.getClass());
         return p;
     }
 }

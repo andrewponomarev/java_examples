@@ -34,7 +34,7 @@ public abstract class Param<T> {
 
     String name;
 
-    Class<?> cls;
+    Class<T> cls;
 
     Boolean isNull;
 

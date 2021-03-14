@@ -21,10 +21,11 @@ public class BooleanParam extends SimpleParam<Boolean> {
         return booleanValue;
     }
 
+
     @Override
-    public void set(Object value) {
+    void setValue(Boolean value) {
         if (value instanceof Boolean) {
-            booleanValue = (Boolean) value;
+            booleanValue = value;
         }
     }
 }

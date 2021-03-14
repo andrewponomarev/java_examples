@@ -20,14 +20,14 @@ public class EnumParam<T extends Enum<T>> extends SimpleParam<T> {
     public T get() {
         T result = null;
         try {
-            result = Enum.valueOf((Class<T>) this.cls, stringValue);
+            result = Enum.valueOf(this.cls, stringValue);
         } catch (Exception e) {
         }
         return result;
     }
 
     @Override
-    public void set(Object value) {
+    void setValue(T value) {
         if (value != null && value.getClass().isEnum()) {
             stringValue = value.toString();
         }

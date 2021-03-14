@@ -17,14 +17,15 @@ public class StringParam extends SimpleParam<String> {
     }
 
     @Override
+    void setValue(String value) {
+        if (value == null || this.cls.isInstance(value)) {
+            stringValue = value;
+        }
+    }
+
+    @Override
     public String get() {
         return stringValue;
     }
 
-    @Override
-    public void set(Object value) {
-        if (value == null || value instanceof String) {
-            stringValue = (String) value;
-        }
-    }
 }

@@ -23,7 +23,7 @@ public class LocalDateParam extends SimpleParam<LocalDate> {
     }
 
     @Override
-    public void set(Object value) {
+    void setValue(LocalDate value) {
         if (value instanceof LocalDate) {
             dateValue = (LocalDate) value;
         }
