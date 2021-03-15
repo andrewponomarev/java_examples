@@ -51,7 +51,7 @@ public class Contract extends GeneralContract {
     private ContractParamComponent contractParamComponent;
 
     public String getNamedStringParam() {
-        return contractParamComponent.get(STRING_NAMED_PARAM, String.class);
+        return contractParamComponent.get(STRING_NAMED_PARAM);
     }
 
     public void setNamedStringParam(String value) {
@@ -59,7 +59,7 @@ public class Contract extends GeneralContract {
     }
 
     public Long getLongNamedParam() {
-        return contractParamComponent.get(LONG_NAMED_PARAM, Long.class);
+        return contractParamComponent.get(LONG_NAMED_PARAM);
     }
 
     public void setLongNamedParam(Long value) {
@@ -67,7 +67,7 @@ public class Contract extends GeneralContract {
     }
 
     public Double getDoubleNamedParam() {
-        return contractParamComponent.get(DOUBLE_NAMED_PARAM, Double.class);
+        return contractParamComponent.get(DOUBLE_NAMED_PARAM);
     }
 
     public void setDoubleNamedParam(Double value) {
@@ -75,7 +75,7 @@ public class Contract extends GeneralContract {
     }
 
     public LocalDate getLocalDateNamedParam() {
-        return contractParamComponent.get(DATE_NAMED_PARAM, LocalDate.class);
+        return contractParamComponent.get(DATE_NAMED_PARAM);
     }
 
     public void setLocalDateNamedParam(LocalDate value) {
@@ -84,7 +84,7 @@ public class Contract extends GeneralContract {
 
 
     public Boolean getBooleanNamedParam() {
-        return contractParamComponent.get(BOOLEAN_NAMED_PARAM, Boolean.class);
+        return contractParamComponent.get(BOOLEAN_NAMED_PARAM);
     }
 
     public void setBooleanNamedParam(Boolean value) {
@@ -92,7 +92,7 @@ public class Contract extends GeneralContract {
     }
 
     public ContractParamObjectExample getContractParamObjectExample() {
-        return contractParamComponent.get(CONTRACT_PARAM_OBJECT_EXAMPLE, ContractParamObjectExample.class);
+        return contractParamComponent.get(CONTRACT_PARAM_OBJECT_EXAMPLE);
     }
 
     public void setContractParamObjectExample(ContractParamObjectExample value) {
@@ -100,7 +100,7 @@ public class Contract extends GeneralContract {
     }
 
     public ContractParamType getEnumParam() {
-        return contractParamComponent.get(ENUM_PARAM, ContractParamType.class);
+        return contractParamComponent.get(ENUM_PARAM);
     }
 
     public void setEnumParam(ContractParamType value) {
@@ -108,7 +108,7 @@ public class Contract extends GeneralContract {
     }
 
     public Collection<?> getCollectionLongNamedParam() {
-        return contractParamComponent.get(COLLECTION_LONG, Collection.class);
+        return contractParamComponent.get(COLLECTION_LONG);
     }
 
     public void setCollectionLongNamedParam(Collection<? extends Long> value) {
@@ -116,7 +116,7 @@ public class Contract extends GeneralContract {
     }
 
     public Collection<?> getCollectionDoubleNamedParam() {
-        return contractParamComponent.get(COLLECTION_DOUBLE, Collection.class);
+        return contractParamComponent.get(COLLECTION_DOUBLE);
     }
 
     public void setCollectionDoubleNamedParam(Collection<? extends Double> value) {
@@ -124,7 +124,7 @@ public class Contract extends GeneralContract {
     }
 
     public Collection<?> getCollectionBooleanNamedParam() {
-        return contractParamComponent.get(COLLECTION_BOOLEAN, Collection.class);
+        return contractParamComponent.get(COLLECTION_BOOLEAN);
     }
 
     public void setCollectionBooleanNamedParam(Collection<? extends Boolean> value) {
@@ -132,7 +132,7 @@ public class Contract extends GeneralContract {
     }
 
     public Collection<?> getCollectionDateNamedParam() {
-        return contractParamComponent.get(COLLECTION_DATE, Collection.class);
+        return contractParamComponent.get(COLLECTION_DATE);
     }
 
     public void setCollectionDateNamedParam(Collection<? extends LocalDate> value) {
@@ -140,7 +140,7 @@ public class Contract extends GeneralContract {
     }
 
     public Collection<?> getCollectionStringNamedParam() {
-        return contractParamComponent.get(COLLECTION_STRING, Collection.class);
+        return contractParamComponent.get(COLLECTION_STRING);
     }
 
     public void setCollectionStringNamedParam(Collection<? extends String> value) {
@@ -148,7 +148,7 @@ public class Contract extends GeneralContract {
     }
 
     public Collection<?> getCollectionSomeObjectNamedParam() {
-        return contractParamComponent.get(COLLECTION_ENUM, Collection.class);
+        return contractParamComponent.get(COLLECTION_ENUM);
     }
 
     public void setCollectionSomeObject(Collection<? extends Object> value) {
@@ -156,7 +156,7 @@ public class Contract extends GeneralContract {
     }
 
     public BigDecimal getBigDecimalParam() {
-        return contractParamComponent.get(BIG_DECIMAL, BigDecimal.class);
+        return contractParamComponent.get(BIG_DECIMAL);
     }
 
     public void setBigDecimalParam(BigDecimal value) {

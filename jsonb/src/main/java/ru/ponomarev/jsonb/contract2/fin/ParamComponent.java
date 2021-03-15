@@ -31,7 +31,7 @@ public abstract class ParamComponent {
         }
     }
 
-    public <T> T get(@NotNull String name, Class<T> clazz) {
+    public <T> T get(@NotNull String name) {
         Optional<Param<?>> optParam = getByName(name);
         Param<T> p;
         if (!optParam.isPresent()) {
