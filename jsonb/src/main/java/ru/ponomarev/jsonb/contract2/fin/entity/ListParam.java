@@ -1,7 +1,6 @@
 package ru.ponomarev.jsonb.contract2.fin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import liquibase.util.BooleanUtils;
 import lombok.NoArgsConstructor;
 import ru.ponomarev.jsonb.contract2.fin.ParamFactory;
 
@@ -21,7 +20,7 @@ public class ListParam extends CompositeParam<List<?>> {
         super(name);
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade= CascadeType.MERGE, orphanRemoval=true)
     @JsonIgnore
     private List<Param<?>> children = new ArrayList<>();
 
@@ -32,22 +31,24 @@ public class ListParam extends CompositeParam<List<?>> {
     }
 
     @Override
-    void clean() {
-        children = new ArrayList<>();
+    void clear() {
+        children.clear();
     }
 
     @Override
-    public List<?> get() {
-        if(BooleanUtils.isTrue(this.isNull)) {
-            return null;
-        }
+    public List<Param<?>> getChildren() {
+        return children;
+    }
+
+    @Override
+    public List<?> getValue() {
         return children.stream().map(Param::get).collect(Collectors.toList());
     }
 
     @Override
     public void set(Object value) {
         if (value == null) {
-            clean();
+            clear();
             isNull = true;
             return;
         }
@@ -55,8 +56,16 @@ public class ListParam extends CompositeParam<List<?>> {
             return;
         }
         List l = (List)value;
-        for (int i = 0; i < l.size(); i++) {
+        mergeWithChildren(l);
+    }
+
+    private void mergeWithChildren(List l) {
+        for (int i = 0; i < Math.min(l.size(), children.size()); i++) {
+            children.get(i).set(l.get(i));
+        }
+        for (int i = Math.min(l.size(), children.size()); i < Math.max(l.size(), children.size()); i++) {
             add(ParamFactory.create(String.valueOf(i), l.get(i)));
         }
     }
+
 }

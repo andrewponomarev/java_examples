@@ -2,6 +2,7 @@ package ru.ponomarev.jsonb.contract2;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
@@ -14,12 +15,13 @@ public class Contract2Repository {
         return crudContractRepository.save(contract);
     }
 
-    Contract get(String id) {
+    @Transactional
+    public Contract get(String id) {
         //return crudContractRepository.findById(id).get();
         return crudContractRepository.findOneForUpdate(id);
     }
 
-    Contract saveAndFlush(Contract contract) {
+    public Contract saveAndFlush(Contract contract) {
         return crudContractRepository.saveAndFlush(contract);
     }
 

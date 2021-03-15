@@ -1,7 +1,6 @@
 package ru.ponomarev.jsonb.contract2.fin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import liquibase.util.BooleanUtils;
 import lombok.NoArgsConstructor;
 import ru.ponomarev.jsonb.contract2.SerializationUtils;
 import ru.ponomarev.jsonb.contract2.fin.ParamFactory;
@@ -18,7 +17,7 @@ public class CompositeObjectParam extends CompositeParam<Object> {
         super(name);
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade= CascadeType.MERGE, orphanRemoval=true)
     @JsonIgnore
     private List<Param<?>> children = new ArrayList<>();
 
@@ -29,16 +28,18 @@ public class CompositeObjectParam extends CompositeParam<Object> {
     }
 
     @Override
-    void clean() {
-        children = new ArrayList<>();
+    void clear() {
+        children.clear();
+    }
+
+    @Override
+    public List<Param<?>> getChildren() {
+        return children;
     }
 
 
     @Override
-    public Object get() {
-        if(BooleanUtils.isTrue(this.isNull)) {
-            return null;
-        }
+    public Object getValue() {
         Map<String, Object> map = new HashMap<>();
         for (Param<?> p : children) {
             if (p.getName() == null) {
@@ -57,7 +58,7 @@ public class CompositeObjectParam extends CompositeParam<Object> {
     @Override
     public void set(Object value) {
         if (value == null) {
-            clean();
+            clear();
             return;
         }
         Map<String, ?> fieldMap = SerializationUtils.serialize(value);

@@ -28,7 +28,7 @@ public abstract class Param<T> {
     @JoinColumn(name = "contract_id")
     Contract contract;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL} )
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE} )
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     Param<?> parent;
 

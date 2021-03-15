@@ -4,24 +4,18 @@ import com.sun.istack.NotNull;
 import ru.ponomarev.jsonb.contract2.Contract;
 import ru.ponomarev.jsonb.contract2.fin.entity.Param;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ParamSuperObject {
 
-    private final List<Param<?>> params;
+    private final List<Param<?>> paramsTree;
 
     private final Contract contract;
 
     public ParamSuperObject(Contract parentObject, List<Param<?>> params) {
         this.contract = parentObject;
-        this.params = new ArrayList<>();
-        for(Param<?> p : params) {
-            if (p.getParent() == null) {
-                params.add(p);
-            }
-        }
+        this.paramsTree = params;
     }
 
     public <T> void set(@NotNull String name, T value) {
@@ -32,8 +26,7 @@ public class ParamSuperObject {
                 return;
             } else {
                 p = ParamFactory.create(name, value);
-                p.setContract(contract);
-                params.add(p);
+                addParam(p);
             }
         } else {
             p = optParam.get();
@@ -57,6 +50,11 @@ public class ParamSuperObject {
     }
 
     private Optional<Param<?>> getByName(String name) {
-        return params.stream().filter(p -> name.equals(p.getName())).findFirst();
+        return paramsTree.stream().filter(p -> name.equals(p.getName())).findFirst();
+    }
+
+    private void addParam(Param<?> p) {
+        paramsTree.add(p);
+        p.setContract(contract);
     }
 }

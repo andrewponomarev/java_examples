@@ -24,7 +24,7 @@ public class Contract extends GeneralContract {
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract", cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract", cascade=CascadeType.MERGE, orphanRemoval=true)
     @JsonIgnore
     private List<Param<?>> params = new ArrayList<>();
 
@@ -48,8 +48,7 @@ public class Contract extends GeneralContract {
     public static String COLLECTION_ENUM = "collectionEnum";
 
     @Transient
-    private ContractParamComponent contractParamComponent = new ContractParamComponent();
-
+    private ContractParamComponent contractParamComponent;
 
     public String getNamedStringParam() {
         return contractParamComponent.get(STRING_NAMED_PARAM, String.class);
@@ -165,7 +164,10 @@ public class Contract extends GeneralContract {
     }
 
 
-
+    @PostLoad
+    private void initContractParamComponent() {
+        contractParamComponent = new ContractParamComponent();
+    }
 
     private class ContractParamComponent extends ParamSuperObject {
 

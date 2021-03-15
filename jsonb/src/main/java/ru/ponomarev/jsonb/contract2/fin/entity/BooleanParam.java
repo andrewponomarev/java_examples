@@ -14,18 +14,18 @@ public class BooleanParam extends SimpleParam<Boolean> {
         super(name);
     }
 
-    private Boolean booleanValue;
+    private Boolean boolValue;
 
     @Override
     public Boolean get() {
-        return booleanValue;
+        return boolValue;
     }
 
 
     @Override
     void setValue(Boolean value) {
         if (value instanceof Boolean) {
-            booleanValue = value;
+            boolValue = value;
         }
     }
 }

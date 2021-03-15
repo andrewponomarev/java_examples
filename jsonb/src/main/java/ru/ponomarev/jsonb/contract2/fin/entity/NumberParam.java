@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class NumberParam<T extends Number> extends SimpleParam<T> {
 
-    BigDecimal numericValue;
+    BigDecimal numberValue;
 
     public NumberParam(String name, T val, Class<T> clazz) {
         super(name);
@@ -22,7 +22,7 @@ public class NumberParam<T extends Number> extends SimpleParam<T> {
     public T get() {
         T result = null;
         try {
-            result = (T) SerializationUtils.deserialize(numericValue.toString(), this.cls);
+            result = (T) SerializationUtils.deserialize(numberValue.toString(), this.cls);
         } catch (Exception e) {}
         return result;
     }
@@ -35,10 +35,10 @@ public class NumberParam<T extends Number> extends SimpleParam<T> {
     @Override
     public void setValue(T value) {
         if (value instanceof BigDecimal) {
-            numericValue = (BigDecimal) value;
+            numberValue = (BigDecimal) value;
         } else if (value instanceof Number) {
             Number numValue = (Number) value;
-            numericValue = new BigDecimal(numValue.toString());
+            numberValue = new BigDecimal(numValue.toString());
         }
     }
 }

@@ -1,6 +1,9 @@
 package ru.ponomarev.jsonb.contract2.fin.entity;
 
+import liquibase.util.BooleanUtils;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 public abstract class CompositeParam<T> extends Param<T> {
@@ -11,6 +14,17 @@ public abstract class CompositeParam<T> extends Param<T> {
 
     abstract void add(Param<?> c);
 
-    abstract void clean();
+    abstract void clear();
+
+    public abstract List<Param<?>> getChildren();
+
+    protected abstract T getValue();
+
+    public T get() {
+        if (BooleanUtils.isTrue(isNull)) {
+            return null;
+        }
+        return getValue();
+    }
 
 }
