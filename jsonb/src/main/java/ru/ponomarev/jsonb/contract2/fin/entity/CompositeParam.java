@@ -32,7 +32,7 @@ public abstract class CompositeParam<T> extends Param<T> {
     public void set(Object value) {
         if (value == null) {
             clear();
-            isNull = null;
+            isNull = true;
             return;
         }
         setValue(value);

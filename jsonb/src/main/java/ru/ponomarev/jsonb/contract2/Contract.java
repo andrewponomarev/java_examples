@@ -48,7 +48,7 @@ public class Contract extends GeneralContract {
     public static String COLLECTION_ENUM = "collectionEnum";
 
     @Transient
-    private ContractParamComponent contractParamComponent;
+    private ContractParamComponent contractParamComponent = new ContractParamComponent();
 
     public String getNamedStringParam() {
         return contractParamComponent.get(STRING_NAMED_PARAM);
