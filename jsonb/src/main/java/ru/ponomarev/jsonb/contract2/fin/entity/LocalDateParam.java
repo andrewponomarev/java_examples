@@ -24,8 +24,6 @@ public class LocalDateParam extends SimpleParam<LocalDate> {
 
     @Override
     void setValue(LocalDate value) {
-        if (value instanceof LocalDate) {
-            dateValue = (LocalDate) value;
-        }
+        dateValue = value;
     }
 }

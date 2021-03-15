@@ -36,9 +36,8 @@ public class NumberParam<T extends Number> extends SimpleParam<T> {
     public void setValue(T value) {
         if (value instanceof BigDecimal) {
             numberValue = (BigDecimal) value;
-        } else if (value instanceof Number) {
-            Number numValue = (Number) value;
-            numberValue = new BigDecimal(numValue.toString());
+        } else {
+            numberValue = new BigDecimal(value.toString());
         }
     }
 }

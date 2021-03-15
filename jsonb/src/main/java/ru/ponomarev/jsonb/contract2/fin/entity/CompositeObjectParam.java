@@ -56,11 +56,7 @@ public class CompositeObjectParam extends CompositeParam<Object> {
 
 
     @Override
-    public void set(Object value) {
-        if (value == null) {
-            clear();
-            return;
-        }
+    public void setValue(Object value) {
         Map<String, ?> fieldMap = SerializationUtils.serialize(value);
         for (Map.Entry<String, ?> e : fieldMap.entrySet()) {
             Optional<Param<?>> optP = children.stream().filter(

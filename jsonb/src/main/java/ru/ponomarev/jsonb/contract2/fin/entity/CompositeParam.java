@@ -20,11 +20,22 @@ public abstract class CompositeParam<T> extends Param<T> {
 
     protected abstract T getValue();
 
+    protected abstract void setValue(Object value);
+
     public T get() {
         if (BooleanUtils.isTrue(isNull)) {
             return null;
         }
         return getValue();
+    }
+
+    public void set(Object value) {
+        if (value == null) {
+            clear();
+            isNull = null;
+            return;
+        }
+        setValue(value);
     }
 
 }

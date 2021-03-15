@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import ru.ponomarev.jsonb.GeneralContract;
-import ru.ponomarev.jsonb.contract2.fin.ParamSuperObject;
+import ru.ponomarev.jsonb.contract2.fin.ParamComponent;
 import ru.ponomarev.jsonb.contract2.fin.entity.Param;
 
 import javax.persistence.*;
@@ -169,10 +169,14 @@ public class Contract extends GeneralContract {
         contractParamComponent = new ContractParamComponent();
     }
 
-    private class ContractParamComponent extends ParamSuperObject {
+    private class ContractParamComponent extends ParamComponent {
 
         public ContractParamComponent() {
-            super(Contract.this, params);
+            super(params);
+        }
+
+        public void linkWithParent(Param<?> p) {
+            p.setContract(Contract.this);
         }
     }
 

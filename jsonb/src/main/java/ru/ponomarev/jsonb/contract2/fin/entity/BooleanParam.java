@@ -24,8 +24,6 @@ public class BooleanParam extends SimpleParam<Boolean> {
 
     @Override
     void setValue(Boolean value) {
-        if (value instanceof Boolean) {
-            boolValue = value;
-        }
+        boolValue = value;
     }
 }

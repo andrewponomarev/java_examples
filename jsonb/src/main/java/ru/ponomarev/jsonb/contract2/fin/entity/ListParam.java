@@ -46,12 +46,7 @@ public class ListParam extends CompositeParam<List<?>> {
     }
 
     @Override
-    public void set(Object value) {
-        if (value == null) {
-            clear();
-            isNull = true;
-            return;
-        }
+    public void setValue(Object value) {
         if (!(value instanceof Collection<?>)) {
             return;
         }

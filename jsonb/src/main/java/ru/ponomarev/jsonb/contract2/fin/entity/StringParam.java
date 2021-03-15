@@ -18,9 +18,7 @@ public class StringParam extends SimpleParam<String> {
 
     @Override
     void setValue(String value) {
-        if (value == null || this.cls.isInstance(value)) {
-            stringValue = value;
-        }
+        stringValue = value;
     }
 
     @Override
